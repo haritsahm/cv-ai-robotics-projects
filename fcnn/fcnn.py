@@ -43,23 +43,21 @@ class ConvBlock(layers.Layer):
 										**super(ConvBlock, self).get_config(),
 										)
 
-def build_model(nx: Optional[int] = None,
-								ny: Optional[int] = None,
-								channels: int = 1,
-								num_classes: int = 2,
-								dropout_rate: int = 0.5,
-								padding:str="valid",
-								activation:Union[str, Callable]="relu") -> Model:
+def build_model(channels: int = 1,num_classes: int = 2,
+				dropout_rate: int = 0.5,
+				padding:str="valid",
+				activation:Union[str, Callable]="relu") -> Model:
 
-		inputs = Input(shape=(nx, ny, channels), name="inputs")
+		inputs = Input(shape=(150, 200, channels), name="inputs")
 
 		x = inputs
 		# --- ENCODE ---
 		# Conv1
 		out = ConvBlock(16, 3, dropout_rate=dropout_rate, padding=padding, activation=activation)(x)
 		before_maxpool1 = out
-		maxpool1 = layers.MaxPool2D(pool_size=[2,2], strides=[2,2], padding=padding)(out)
-
+		out = layers.MaxPool2D(pool_size=[2,2], strides=[2,2], padding=padding)(out)
+		maxpool1 = out 
+		
 		# Conv2
 		out = ConvBlock(32, 3, dropout_rate=dropout_rate, padding=padding, activation=activation)(out) 
 		# Conv3 
