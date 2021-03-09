@@ -6,3 +6,5 @@ tqdm
 torch
 torchvision
 pathlib
+hub
+matplotlib
